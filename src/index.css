@@ -1,0 +1,15 @@
+/* Import Leaflet CSS for map rendering */
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom style to override leaflet's default marker icon path issue in some environments */
+.leaflet-container {
+    height: 100vh;
+    width: 100vw;
+}
+.leaflet-marker-icon, .leaflet-marker-shadow {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
