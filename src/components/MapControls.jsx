@@ -2,15 +2,29 @@
 import React from 'react';
 import { calculateSpeedKmH } from "../utils.js";
 
-function MapControls({ routeData, currentIndex, isPlaying, togglePlay, resetSimulation, sliderValue, onSliderChange }) {
+// UPDATED PROPS: Pass the state values and handlers from the parent
+function MapControls({ 
+    routeData, 
+    currentIndex, 
+    isPlaying, 
+    togglePlay, 
+    resetSimulation, 
+    sliderValue, 
+    onSliderChange,
+    selectedVehicleType, // New Prop
+    setSelectedVehicleType, // New Prop
+    selectedTimeRange, // New Prop
+    setSelectedTimeRange, // New Prop
+    handleShowRoute // New Prop
+}) {
     const currentPosition = routeData[currentIndex] || routeData[0] || { latitude: 0, longitude: 0, timestamp: '' };
     const speedKmh = calculateSpeedKmH(currentIndex, routeData);
     
-    // UI look from Screenshot 2025-10-27 214226.jpg & 214346.jpg
+    // ... UI look comments ...
 
     return (
         <>
-            {/* Top-Left Metadata Card */}
+            {/* Top-Left Metadata Card (No changes) */}
             <div className="absolute top-4 left-4 z-[1000] p-4 bg-white shadow-xl rounded-lg w-full max-w-xs md:max-w-sm">
                 <h2 className="text-sm font-semibold text-gray-700 mb-1">WIRELESS</h2>
                 <div className="bg-gray-100 p-3 rounded-lg space-y-1">
@@ -21,7 +35,7 @@ function MapControls({ routeData, currentIndex, isPlaying, togglePlay, resetSimu
                 </div>
             </div>
 
-            {/* Main Center Control Bar */}
+            {/* Main Center Control Bar (No changes) */}
             <div className="absolute left-1/2 -translate-x-1/2 bottom-20 md:bottom-28 z-[1000] p-2 pointer-events-auto">
                 <div className="bg-white rounded-lg shadow-2xl px-6 py-4 flex items-center gap-4 w-[90vw] max-w-4xl">
                     
@@ -66,20 +80,43 @@ function MapControls({ routeData, currentIndex, isPlaying, togglePlay, resetSimu
                 </div>
             </div>
 
-            {/* Bottom Configure Bar (Screenshot 2025-10-27 214315.jpg) */}
+            {/* Bottom Configure Bar (UPDATED with State and Handlers) */}
             <div className="absolute left-0 right-0 bottom-0 z-[900] pointer-events-auto">
                 <div className="bg-white shadow-lg px-6 py-4 flex items-center justify-between">
                     <div className="text-base font-semibold text-gray-800">Configure</div>
                     <div className="flex items-center gap-3">
-                        <select className="px-3 py-1.5 border border-gray-300 rounded text-sm focus:ring-blue-500 focus:border-blue-500">
+                        {/* Vehicle Type Select */}
+                        <select 
+                            className="px-3 py-1.5 border border-gray-300 rounded text-sm focus:ring-blue-500 focus:border-blue-500"
+                            value={selectedVehicleType}
+                            onChange={(e) => setSelectedVehicleType(e.target.value)}
+                        >
                             <option>WIRELESS</option>
                             <option>GPS</option>
                         </select>
-                        <select className="px-3 py-1.5 border border-gray-300 rounded text-sm focus:ring-blue-500 focus:border-blue-500">
-                            <option>Yesterday</option>
+                        
+                        {/* Time Range Select */}
+                        <select 
+                            className="px-3 py-1.5 border border-gray-300 rounded text-sm focus:ring-blue-500 focus:border-blue-500"
+                            value={selectedTimeRange}
+                            onChange={(e) => setSelectedTimeRange(e.target.value)}
+                        >
                             <option>Today</option>
+                            <option>Yesterday</option>
+                            <option>This Week</option>
+                            <option>Previous Week</option>
+                            <option>This Month</option>
+                            <option>Previous Month</option>
+                            <option>Custom</option>
                         </select>
-                        <button className="ml-3 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition">SHOW</button>
+
+                        {/* SHOW Button */}
+                        <button 
+                            onClick={handleShowRoute} // <-- ATTACHED HANDLER
+                            className="ml-3 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition"
+                        >
+                            SHOW
+                        </button>
                     </div>
                 </div>
             </div>
